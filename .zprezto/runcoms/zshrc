@@ -1,0 +1,32 @@
+# FIRST GET PREZTO FROM https://github.com/sorin-ionescu/prezto
+#
+# Executes commands at the start of an interactive session.
+#
+# Authors:
+#   Sorin Ionescu <sorin.ionescu@gmail.com>
+#
+
+# Source Prezto.
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
+
+# Customize to your needs...
+
+alias vim=nvim
+export KEYTIMEOUT=1
+
+# workaround for handling TERM variable in multiple tmux sessions properly from http://sourceforge.net/p/tmux/mailman/message/32751663/ by Nicholas Marriott
+#if [[ -n ${TMUX} && -n ${commands[tmux]} ]];then
+#        case $(tmux showenv TERM 2>/dev/null) in
+#                *256color) ;&
+#                TERM=fbterm)
+#                        TERM=screen-256color ;;
+#                *)
+#                        TERM=screen
+#        esac
+#fi
+#
+## TMUX
+#[[ $- != *i* ]] && return
+#[[ -z "$TMUX" && -z "$INSIDE_EMACS" ]] && exec tmux
