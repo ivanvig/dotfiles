@@ -49,9 +49,9 @@ alert = #fb4934
 ;monitor = eDP-1
 ;bottom = true
 wm-restack = bspwm
-width = 2536
+width = 99%
 height = 30
-offset-x = 12
+offset-x = 0.5%
 offset-y = 6
 ;offset-y = 11
 
@@ -85,9 +85,10 @@ tray-padding = 0
 tray-transparent = false
 tray-scale = 1.0
 
-font-0 = "Source Code Pro:size=10;2"
-font-1 = "FontAwesome:size=10;2"
-
+font-0 = "Source Code Pro;3"
+font-1 = "Font Awesome 5 Free:style=Regular;3"
+font-2 = "Font Awesome 5 Free:style=Solid;3"
+font-3 = "Font Awesome 5 Brands;3"
 
 [module/mpd]
 type = internal/mpd
@@ -136,7 +137,12 @@ label-empty = %icon%
 label-empty-foreground = ${colors.foreground-alt}
 label-empty-padding = 2
 
-ws-icon-0 = 1;
+label-locked = " "
+label-sticky = " "
+label-private = " "
+label-marked = " "
+
+ws-icon-0 = 1;
 ws-icon-1 = 2;
 ws-icon-2 = 3;
 ws-icon-3 = 4;
