@@ -1,9 +1,10 @@
-letterEnteredColor=d23c3dff
-letterRemovedColor=d23c3dff
+letterEnteredColor=d79921ff
+letterRemovedColor=cc241dff
 passwordCorrect=00000000
-passwordIncorrect=d23c3dff
-background=00000000
-foreground=ffffffff
+passwordIncorrect=fb4934ff
+background=928374ff
+foreground=ebdbb2ff
+locktext='Type password to unlock...'
 
 for queue in /tmp/polybar_mqueue.*; do echo cmd:hide > ${queue}; done
 for id in $(bspc query -D); do bspc node @${id}:/ -g hidden=on; done
@@ -20,9 +21,9 @@ i3lock \
   --ringvercolor=$foreground --ringwrongcolor=$foreground --indpos='x+280:h-70' \
   --radius=20 --ring-width=4 --veriftext='' --wrongtext='' \
   --verifcolor="$foreground" --timecolor="$foreground" --datecolor="$foreground" \
-  --noinputtext='' --force-clock $lockargs &
+  --noinputtext='' --force-clock &
 
-sleep 0.05
+sleep 0.1
 xprop -name "i3lock" -f WM_CLASS 8s -set WM_CLASS "i3lock"
 wait
 for queue in /tmp/polybar_mqueue.*; do echo cmd:show > ${queue}; done
