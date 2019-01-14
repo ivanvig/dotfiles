@@ -43,7 +43,7 @@ super + y
 #
 # swap the newest marked node and the focused node
 super + ctrl + s
-	bspc node focused -s newest.marked.local
+	bspc node focused -s newest.marked
 
 # swap the current node and the biggest node
 super + g
