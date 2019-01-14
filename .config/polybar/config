@@ -49,9 +49,9 @@ alert = #fb4934
 ;monitor = eDP-1
 ;bottom = true
 wm-restack = bspwm
-width = 99%
+width = 2536
 height = 30
-offset-x = 0.5%
+offset-x = 12
 offset-y = 6
 ;offset-y = 11
 
@@ -92,6 +92,12 @@ font-3 = "Font Awesome 5 Brands;3"
 
 [bar/notebook-bar]
 inherit = bar/desktop-bar
+
+width = 1896
+height = 40
+offset-x = 12
+offset-y = 6
+
 modules-right = wifi-network separator volume separator battery separator date
 
 [module/mpd]
