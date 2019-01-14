@@ -51,7 +51,11 @@ fi
 xsetroot -cursor_name left_ptr &
 compton --config ~/.config/compton.conf &
 sxhkd &
-polybar bar &
+if [ $HOST = "proteus" ]; then
+  polybar notebook-bar &
+elif [ $HOST = "galatea" ]; then
+  polybar desktop-bar &
+fi
 feh --randomize --bg-fill ~/Imágenes/wallpapers/ultrawide/low-contrast &
 redshift &
 mpd .config/mpd/mpd.conf &
