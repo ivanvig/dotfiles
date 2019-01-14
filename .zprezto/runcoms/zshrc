@@ -14,6 +14,7 @@ fi
 # Customize to your needs...
 
 alias vim=nvim
+alias emc='emacsclient -t -a ""'
 export KEYTIMEOUT=1
 
 # workaround for handling TERM variable in multiple tmux sessions properly from http://sourceforge.net/p/tmux/mailman/message/32751663/ by Nicholas Marriott
