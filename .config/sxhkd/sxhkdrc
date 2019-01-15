@@ -140,3 +140,8 @@ super + {_,shift} + r
 # rotate nodes
 super + ctrl + r
   bspc node -R 90
+
+# balance tree
+super + ctrl + b
+  bspc node -B
+
