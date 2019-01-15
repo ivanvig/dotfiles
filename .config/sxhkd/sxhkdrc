@@ -6,16 +6,23 @@
 super + Return
 	termite
 
+# Hotkeys helper
+super + F1
+  .config/rofi/hotkey-help.sh
+
 # capture screen
 Print
   magick import -window root png:- | xclip -selection clipboard -t image/png
 
 # program launcher
-super + @space
+super + space
   rofi -show drun -modi drun,window,run -show-icons -terminal termite
 
+# web search
+super + shift + space
+  .config/rofi/web-search.sh
 # sudo rofi
-super + ctrl + @space
+super + alt + space
   SUDO_ASKPASS=~/.config/rofi/askpass rofi -show drun -run-command "sudo -A {cmd}"
 # make sxhkd reload its configuration files:
 super + Escape
