@@ -5,6 +5,7 @@ usermodmap=$HOME/.Xmodmap
 sysresources=/etc/X11/xinit/.Xresources
 sysmodmap=/etc/X11/xinit/.Xmodmap
 
+host=$(hostname -s)
 # merge in defaults and keymaps
 
 if [ -f $sysresources ]; then
@@ -51,12 +52,13 @@ fi
 xsetroot -cursor_name left_ptr &
 compton --config ~/.config/compton.conf &
 sxhkd &
-if [ $HOST = "proteus" ]; then
+if [ $host = "proteus" ]; then
   polybar notebook-bar &
-elif [ $HOST = "galatea" ]; then
+elif [ $host = "galatea" ]; then
   polybar desktop-bar &
 fi
 feh --randomize --bg-fill ~/Imágenes/wallpapers/ultrawide/low-contrast &
 redshift &
 mpd .config/mpd/mpd.conf &
+emacs --daemon &
 exec bspwm
