@@ -1,6 +1,10 @@
 #! /bin/sh
 
-bspc monitor -d 1 2 3 4 5 6 7 8 9 10
+#bspc monitor -d 1 2 3 4 5 6 7 8 9 10
+
+for monitor in $(bspc query -M); do
+    bspc monitor $monitor -d 1 2 3 4 5 6 7 8 9 10
+done
 
 bspc config border_width         2
 bspc config window_gap          12
@@ -14,6 +18,15 @@ bspc rule -a Chromium desktop='^2'
 bspc rule -a mplayer2 state=floating
 bspc rule -a Kupfer.py focus=on
 bspc rule -a Screenkey manage=off
-bspc rule -a Emacs state=tiled
 
-.config/lock/lock.sh
+compton -b --config ~/.config/compton.conf
+feh --randomize --bg-fill ~/Imágenes/wallpaper/ultrawide/low-contrast &
+sxhkd &
+#polybar desktop-bar &
+#.config/lock/lock.sh
+xrandr --output HDMI-0 --left-of VGA-0
+killall -q polybar
+while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
+for m in $(polybar --list-monitors | cut -d":" -f1); do
+    MONITOR=$m polybar --reload desktop-bar &
+done

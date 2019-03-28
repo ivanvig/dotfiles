@@ -47,7 +47,7 @@ super + m
 # send the newest marked node to the newest preselected node
 super + y
 	bspc node newest.marked.local -n newest.!automatic.local
-#
+
 # swap the newest marked node and the focused node
 super + ctrl + s
 	bspc node focused -s newest.marked
@@ -76,6 +76,18 @@ super + ctrl + {m,x,y,z}
 super + {_,shift + }{h,j,k,l}
 	bspc node -{f,s} {west,south,north,east}
 
+# focus the next monitor
+super + ctrl + Tab
+	bspc monitor -f next
+
+# focus/move window to specific desktop on specific monitor
+super + apostrophe; {_,shift +}{1-3} ; {1-9,0}
+  bspc {desktop -f, node -d} ^{1-3}:^{1-9,10}
+
+# move to specific desktop on specific monitor
+#super + shift + m : shift + {1-3} ; {1-9,0}
+#  bspc node -d ^{1-3}:^{1-9,10}
+
 # focus the node for the given path jump
 super + {p,b,comma,period}
 	bspc node -f @{parent,brother,first,second}
@@ -100,7 +112,7 @@ super + {o,i}
 
 # focus or send to the given desktop
 super + {_,shift + }{1-9,0}
-	bspc {desktop -f,node -d} '^{1-9,10}'
+	bspc {desktop -f,node -d} {1-9,10}.local
 
 #
 # preselect

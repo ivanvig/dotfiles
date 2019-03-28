@@ -46,10 +46,11 @@ secondary = #FF6200
 alert = #fb4934
 
 [bar/desktop-bar]
-;monitor = eDP-1
+monitor = ${env:MONITOR}
 ;bottom = true
 wm-restack = bspwm
-width = 2536
+;width = 2536
+width = 1896
 height = 30
 offset-x = 12
 offset-y = 6
@@ -86,9 +87,10 @@ tray-transparent = false
 tray-scale = 1.0
 
 font-0 = "Source Code Pro;3"
-font-1 = "Font Awesome 5 Free:style=Regular;3"
-font-2 = "Font Awesome 5 Free:style=Solid;3"
-font-3 = "Font Awesome 5 Brands;3"
+;font-1 = "Font Awesome 5 Free:style=Regular;3"
+;font-2 = "Font Awesome 5 Free:style=Solid;3"
+;font-3 = "Font Awesome 5 Brands;3"
+font-1 = "FontAwesome:style=Regular;3"
 
 [bar/notebook-bar]
 inherit = bar/desktop-bar
@@ -152,7 +154,7 @@ label-sticky = " "
 label-private = " "
 label-marked = " "
 
-ws-icon-0 = 1;
+ws-icon-0 = 1;
 ws-icon-1 = 2;
 ws-icon-2 = 3;
 ws-icon-3 = 4;
