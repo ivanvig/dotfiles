@@ -48,8 +48,10 @@ alert = #fb4934
 [bar/desktop-bar]
 ;monitor = eDP-1
 ;bottom = true
+monitor = ${env:MONITOR:}
 wm-restack = bspwm
-width = 2536
+;width = 2536
+width = 100%:-24
 height = 30
 offset-x = 12
 offset-y = 6
