@@ -5,7 +5,7 @@
 # Authors:
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
 #
-
+[[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
@@ -13,8 +13,10 @@ fi
 
 # Customize to your needs...
 
+export EDITOR="emacsclient -nw"
+export VISUAL="emacsclient -nw"
+alias emc="emacsclient -nw"
 alias vim=nvim
-alias emc='emacsclient -t -a ""'
 export KEYTIMEOUT=1
 
 # workaround for handling TERM variable in multiple tmux sessions properly from http://sourceforge.net/p/tmux/mailman/message/32751663/ by Nicholas Marriott
