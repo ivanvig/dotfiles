@@ -13,10 +13,10 @@ fi
 
 # Customize to your needs...
 
-export EDITOR="emacsclient -nw"
-export VISUAL="emacsclient -nw"
-alias emc="emacsclient -nw"
+alias emc="emacsclient -t -s edit -a ''"
 alias vim=nvim
+export EDITOR="emacsclient -t -s edit -a ''"
+export VISUAL="emacsclient -c -s edit -a ''"
 export KEYTIMEOUT=1
 
 # workaround for handling TERM variable in multiple tmux sessions properly from http://sourceforge.net/p/tmux/mailman/message/32751663/ by Nicholas Marriott
