@@ -16,14 +16,14 @@ Print
 
 # program launcher
 super + space
-  rofi -show drun -modi drun,window,run -show-icons -terminal termite
+  rofi -show drun -modi drun,window,run -show-icons -terminal kitty
 
 # web search
 super + shift + space
   .config/rofi/web-search.sh
 # sudo rofi
 super + alt + space
-  SUDO_ASKPASS=~/.config/rofi/askpass rofi -show drun -run-command "sudo -A {cmd}"
+  SUDO_ASKPASS=~/.config/rofi/askpass rofi -show drun -modi drun,run -show-icons -terminal kitty -run-command "sudo echo '{cmd}'"
 # make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd
