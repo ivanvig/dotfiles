@@ -15,7 +15,7 @@ elif [ $host = "galatea" ]; then
   done 
 fi
 
-feh --randomize --bg-fill ~/Imágenes/wallpapers/ultrawide/low-contrast &
+feh --bg-fill Imágenes/wallpapers/ultrawide/4imy985colb21.png
 
 if ! pgrep redshift > /dev/null; then
     redshift &
@@ -34,7 +34,7 @@ done
 bspc config border_width         2
 bspc config window_gap          12
 
-bspc config split_ratio          0.52
+bspc config split_ratio          0.5
 bspc config borderless_monocle   true
 bspc config gapless_monocle      false
 
