@@ -12,12 +12,18 @@ if [ $host = "galatea" ]; then
     bar="desktop-bar"
 elif [ $host = "proteus" ]; then
     bar="notebook-bar"
+    if ! pgrep blueman-applet > /dev/null; then
+        blueman-applet &
+    fi
+    if ! pgrep optimus-manager-qt > /dev/null; then
+        optimus-manager-qt &
+    fi
+    feh --bg-fill Imágenes/wallpapers/wallpaperflare.com_wallpaper.jpg
 fi
+
 for m in $(polybar --list-monitors | cut -d":" -f1); do
     MONITOR=$m polybar --reload $bar &
 done
-
-feh --randomize --bg-fill ~/Imágenes/wallpapers/ultrawide/low-contrast &
 
 if ! pgrep redshift > /dev/null; then
     redshift &
