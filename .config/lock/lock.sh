@@ -23,8 +23,6 @@ i3lock \
   --verifcolor="$foreground" --timecolor="$foreground" --datecolor="$foreground" \
   --noinputtext='' --force-clock &
 
-sleep 0.1
-xprop -name "i3lock" -f WM_CLASS 8s -set WM_CLASS "i3lock"
 wait
 for queue in /tmp/polybar_mqueue.*; do echo cmd:show > ${queue}; done
 for id in $(bspc query -D); do bspc node @${id}:/ -g hidden=off; done
