@@ -12,7 +12,10 @@ super + F1
 
 # capture screen
 Print
-  magick import -window root png:- | xclip -selection clipboard -t image/png
+  maim -d 0.5 -s ~/Images/Screenshots/$(date +%F-%H:%M:%S).png
+
+shift + Print
+  maim -s | xclip -selection clipboard -t image/png
 
 # program launcher
 super + space
