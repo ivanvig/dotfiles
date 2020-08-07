@@ -90,8 +90,7 @@ padding-right = 0
 module-margin-right = 0
 module-margin-left = 0
 
-;modules-right = keyboard separator network separator volume separator date
-modules-right = pkgupdates sep eth-network sep cpu temperature sep memory sep filesystem sep volume
+modules-right = pkgupdates sep eth-network sep cpu temperature sep memory sep filesystem sep volume sep
 modules-center = date
 modules-left = bspwm sep spotify
 
