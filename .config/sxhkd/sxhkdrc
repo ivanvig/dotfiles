@@ -15,11 +15,11 @@ Print
   maim -d 0.5 -s ~/Images/Screenshots/$(date +%F-%H:%M:%S).png
 
 shift + Print
-  maim -s | xclip -selection clipboard -t image/png
+  maim -d 0.5 -s | xclip -selection clipboard -t image/png
 
 # program launcher
 super + space
-  rofi -show drun -modi drun,window,run -show-icons -terminal kitty
+  rofi -show drun -modi drun,window,run -show-icons -terminal kitty -drun-show-actions
 
 # web search
 super + shift + space
@@ -75,7 +75,7 @@ super + m
 
 # send the newest marked node to the newest preselected node
 super + y
-	bspc node newest.marked.local -n newest.!automatic.local
+	bspc node newest.marked -n newest.!automatic
 #
 # swap the newest marked node and the focused node
 super + ctrl + s
