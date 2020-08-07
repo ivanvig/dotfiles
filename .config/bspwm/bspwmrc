@@ -10,7 +10,7 @@ fi
 
 if [ $host = "galatea" ]; then
     bar="desktop-bar"
-    feh --bg-fill Imágenes/wallpapers/ultrawide/4imy985colb21.png
+    feh --bg-fill Imágenes/thewitness.png
 elif [ $host = "proteus" ]; then
     bar="notebook-bar"
     if ! pgrep blueman-applet > /dev/null; then
