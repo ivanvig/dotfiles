@@ -24,26 +24,49 @@
 
 
 [colors]
-;orange = #FF6200
-;orange = #d65d0e
-darkgray = #928374
-orange = #d79921
-white = #ebdbb2
-gray = #585858
-black = #090909
-red = #c795ae
-blue = #95aec7
-yellow = #c7ae95
-green = #aec795
-#background = #1f222d
 background = #282828
-background-alt = #4e4e4e
-#foreground = #dfdfdf
 foreground = #ebdbb2
-foreground-alt = #4e4e4e
-primary = #1f222d
-secondary = #FF6200
-alert = #fb4934
+black =  #282828
+darkgray =  #928374
+darkred =  #cc241d
+red =  #fb4934
+darkgreen =  #98971a
+green = #b8bb26
+darkyellow =  #d79921
+yellow = #fabd2f
+darkblue =  #458588
+blue = #83a598
+darkmagenta =  #b16286
+magenta = #d3869b
+darkcyan =  #689d6a
+cyan = #8ec07c
+lightgray =  #a89984
+white = #ebdbb2
+darkpurple= #b16286
+purple = #d3869b
+darkorange = #d65d0e
+orange = #fe8019
+
+
+;darkgray = #928374
+;orange = #d79921
+;white = #ebdbb2
+;gray = #585858
+;black = #090909
+;purple = 
+;red = #c795ae
+;blue = #95aec7
+;yellow = #c7ae95
+;green = #aec795
+;#background = #1f222d
+;background = #282828
+;darkgray = #4e4e4e
+;#foreground = #dfdfdf
+;foreground = #ebdbb2
+;darkgray = #4e4e4e
+;primary = #1f222d
+;secondary = #FF6200
+;alert = #fb4934
 
 [bar/desktop-bar]
 ;monitor = eDP-1
@@ -68,14 +91,14 @@ module-margin-right = 0
 module-margin-left = 0
 
 ;modules-right = keyboard separator network separator volume separator date
-modules-right = eth-network separator volume separator date
-modules-center = mpd 
-modules-left = bspwm
+modules-right = pkgupdates sep eth-network sep cpu temperature sep memory sep filesystem sep volume
+modules-center = date
+modules-left = bspwm sep spotify
 
 background = ${colors.background}
 foreground = ${colors.foreground}
 
-underline-size = 0
+underline-size = 1
 underline-color = ${colors.white}
 
 tray-detached = false
@@ -87,11 +110,12 @@ tray-padding = 0
 ; tray-transparent = false
 tray-scale = 1.0
 
-font-0 = "Source Code Pro:style=Semibold;3"
-font-1 = "Iosevka Nerd Font:size=15;3"
-; font-1 = "Font Awesome 5 Free:style=Regular;3"
-; font-2 = "Font Awesome 5 Free:style=Solid;3"
-; font-3 = "Font Awesome 5 Brands;3"
+font-0 = Iosevka:style=Semibold Extended:antialias=true:size=11;3
+;font-1 = unifont:fontformat=truetype:size=12:antialias=false;0
+;font-2 = "MaterialIcons:size=12:antialias=false;1"
+;font-3 = "icomoon-extended-ultra:size=12:antialias=false;1"
+;font-4 = "Ubuntu Nerd Font:size=12:antialias=false;1"
+font-5 = FontAwesome;3
 
 [bar/notebook-bar]
 inherit = bar/desktop-bar
@@ -103,65 +127,44 @@ offset-y = 6
 
 modules-right = wifi-network separator volume separator battery separator date
 
-[module/mpd]
-type = internal/mpd
-host = 127.0.0.1
-port = 6600
-format-online =<icon-prev><label-song><icon-next>
-format-online-underline = ${colors.white}
-format-online-padding = 1
-
-#label-song-font = 4
-label-song = %{A1:mpc toggle:}%artist% - %title%%{A}
-icon-play = 
-icon-pause = 
-icon-prev = 
-icon-next = 
-
-icon-prev-foreground = ${colors.darkgray} 
-icon-next-foreground = ${colors.darkgray}
-
-icon-play-padding = 1
-icon-pause-padding = 1
-icon-prev-padding = 1
-icon-next-padding = 1
-label-song-padding = 1
-
 [module/bspwm]
 type = internal/bspwm
 format = <label-state> <label-mode>
 
 label-focused = %icon%
 ;label-focused-font = 1
-label-focused-background = ${colors.background-alt}
-;label-focused-underline= ${colors.primary}
+label-focused-background = ${colors.darkgray}
 label-focused-underline= ${colors.white}
-label-focused-padding = 2
+label-focused-padding = 1
+label-focused-alignment = center
 
 label-occupied = %icon%
-label-occupied-foreground = ${colors.darkgray}
-label-occupied-padding = 2
+label-occupied-foreground = ${colors.foreground}
+label-occupied-padding = 1
+label-occupied-alignment = center
 
 label-urgent = %icon%!
-label-urgent-background = ${colors.alert}
-label-urgent-padding = 2
+label-urgent-background = ${colors.red}
+label-urgent-padding = 1
+label-urgent-alignment = center
 
 label-empty = %icon%
-label-empty-foreground = ${colors.foreground-alt}
-label-empty-padding = 2
+label-empty-foreground = ${colors.darkgray}
+label-empty-padding = 1
+label-empty-alignment = center
 
-label-locked = " "
-label-sticky = " "
-label-private = " "
-label-marked = " "
+label-locked = "[L]"
+label-sticky = "[S]"
+label-private = "[P]"
+label-marked = "[M]"
 
-ws-icon-0 = 1;
-ws-icon-1 = 2;
-ws-icon-2 = 3;
-ws-icon-3 = 4;
-ws-icon-4 = 5;
-ws-icon-5 = 6;
-ws-icon-default = ﱣ
+ws-icon-0 = 1;www
+ws-icon-1 = 2;dev
+ws-icon-2 = 3;csl
+ws-icon-3 = 4;mus
+ws-icon-4 = 5;soc
+ws-icon-5 = 6;dir
+ws-icon-default = etc
 
 
 [module/date]
@@ -170,7 +173,7 @@ ws-icon-default = ﱣ
 ;;date = %{F#928374}%{F-} %H:%M
 ;date =  %H:%M
 ;interval = 30
-;format-underline = ${colors.white}
+format-underline = ${colors.white}
 ;;format-background = ${colors.black}
 ;format-foreground = ${colors.foreground}
 ;format-padding = 2
@@ -179,24 +182,22 @@ interval = 30
 label =  %time%
 label-padding = 2
 ;label-background = ${color.shade3}
-time =  %H:%M
-time-alt =  %Y-%m-%d
+time = %H:%M
+time-alt = %Y-%m-%d
 
 [module/volume]
 type = internal/pulseaudio
 use-ui-max = false
 
-format-volume = <ramp-volume> <label-volume>
-format-volume-padding = 2
-;format-volume-background = ${color.shade6}
-label-volume = %percentage%%
-label-muted = "婢 -%"
-;label-muted-background = ${color.shade6}
-label-muted-padding = 2
+format-volume = <label-volume>
+label-volume = vol: %percentage%%
+label-volume-foreground = ${colors.darkorange}
+label-volume-minlen = 9
 
-ramp-volume-0 = 奄
-ramp-volume-1 = 奔
-ramp-volume-2 = 墳
+label-muted = vol: -
+label-muted-minlen = 9
+label-muted-foreground = ${colors.red}
+
 
 [module/keyboard]
 type = internal/xkeyboard
@@ -214,13 +215,11 @@ format-underline = ${colors.white}
 ;   %number%
 ; Default: %layout%
 label-layout = %layout%
-format-padding = 2
 
 ; Available tokens:
 ;   %name%
 ; Default: %name%
 label-indicator = %name%
-label-indicator-padding = 0
 
 [module/eth-network]
 type = internal/network
@@ -245,26 +244,26 @@ interval = 3.0
 ; Default: false
 accumulate-stats = true
 
-format-connected-padding = 2
-format-disconnected-padding = 2
-format-connected-underline = ${colors.white}
+;format-connected-underline = ${colors.white}
 format-disconnected-underline = ${colors.white}
 
 ; Available tags:
 ;   <label-connected> (default)
 ;   <ramp-signal>
 ;format-connected = %{F#928374} %{F-}<label-connected> 
-format-connected = %{F#928374} %{F-}<label-connected> 
+format-connected = eth: <label-connected> 
+format-connected-foreground = ${colors.darkcyan}
 
 ; Available tags:
 ;   <label-disconnected> (default)
-format-disconnected = <label-disconnected>
+format-disconnected = eth: <label-disconnected>
+format-disconnected-foreground = ${colors.red}
 
 ; Available tags:
 ;   <label-connected> (default)
 ;   <label-packetloss>
 ;   <animation-packetloss>
-format-packetloss = <animation-packetloss> <label-connected>
+format-packetloss = eth: [!] <label-connected>
 
 ; Available tokens:
 ;   %ifname%    [wireless+wired]
@@ -275,12 +274,13 @@ format-packetloss = <animation-packetloss> <label-connected>
 ;   %downspeed% [wireless+wired]
 ;   %linkspeed% [wired]
 ; Default: %ifname% %local_ip%
-label-connected = %downspeed:3%
-
+label-connected = %downspeed%
+label-connected-minlen = 8
+label-connected-alignment = center
 ; Available tokens:
 ;   %ifname%    [wireless+wired]
 ; Default: (none)
-label-disconnected = %{F#928374} %{F-}none
+label-disconnected = -
 
 ; Available tokens:
 ;   %ifname%    [wireless+wired]
@@ -291,12 +291,6 @@ label-disconnected = %{F#928374} %{F-}none
 ; Default: (none)
 ;label-packetloss = %essid%
 ;label-packetloss-foreground = #eefafafa
-
-; Only applies if <animation-packetloss> is used
-animation-packetloss-0 = ⚠
-animation-packetloss-1 = 📶
-; Framerate in milliseconds
-animation-packetloss-framerate = 500
 
 [module/wifi-network]
 type = internal/network
@@ -321,8 +315,6 @@ interval = 3.0
 ; Default: false
 accumulate-stats = true
 
-format-connected-padding = 2
-format-disconnected-padding = 2
 format-connected-underline = ${colors.white}
 format-disconnected-underline = ${colors.white}
 
@@ -375,10 +367,11 @@ animation-packetloss-1 = 📶
 ; Framerate in milliseconds
 animation-packetloss-framerate = 500
 
-[module/separator]
+[module/sep]
 type = custom/text
 content = |
-content-foreground = #4e4e4e
+content-padding = 1
+content-foreground = ${colors.darkgray}
 
 [module/battery]
 type = internal/battery
@@ -412,7 +405,6 @@ time-format = %H:%M
 ;   <ramp-capacity>
 ;   <animation-charging>
 format-charging = <animation-charging> <label-charging>
-format-charging-padding = 2
 
 ; Available tags:
 ;   <label-discharging> (default)
@@ -420,7 +412,6 @@ format-charging-padding = 2
 ;   <ramp-capacity>
 ;   <animation-discharging>
 format-discharging = <ramp-capacity> <label-discharging>
-format-discharging-padding = 2
 
 ; Available tags:
 ;   <label-full> (default)
@@ -444,7 +435,6 @@ label-discharging = %percentage%%
 ; Available tokens:
 ;   %percentage% (default)
 format-full = <label-full>
-format-full-padding = 2
 label-full = 
 
 ; Only applies if <ramp-capacity> is used
@@ -482,3 +472,289 @@ animation-charging-framerate = 750
 ; Framerate in milliseconds
 ;animation-discharging-framerate = 500
 ; vim:ft=dosini
+
+[module/pkgupdates]
+type = custom/script
+format-foreground = ${colors.darkgreen}
+
+; Available tokens:
+;   %counter%
+; Command to be executed (using "/bin/sh -c [command]")
+exec = checkupdates | wc -l
+
+; Conditional command that, if defined, needs to exit successfully
+; before the main exec command is invoked.
+; Default: ""
+;exec-if = pgrep -x myservice
+
+; Will the script output continous content?
+; Default: false
+;tail = true
+
+; Seconds to sleep between updates
+; Default: 5 (0 if `tail = true`)
+interval = 3600
+
+; Available tags:
+;   <output> - deprecated
+;   <label> (default)
+format = upd: <label>
+;format-background = #999
+;format-foreground = #000
+
+; Available tokens:
+;   %output%
+; Default: %output%
+;label = %output:0:15:...%
+
+; Available tokens:
+;   %counter%
+;   %pid%
+;
+; "click-(left|middle|right)" will be executed using "/bin/sh -c [command]"
+click-left = checkupdates | wc -l
+;click-middle = echo middle %counter%
+;click-right = echo right %counter%
+;double-click-left = echo double left %counter%
+;double-click-middle = echo double middle %counter%
+;double-click-right = echo double right %counter%
+
+; Available tokens:
+;   %counter%
+;   %pid%
+;
+; "scroll-(up|down)" will be executed using "/bin/sh -c [command]"
+;scroll-up = echo scroll up %counter%
+;scroll-down = echo scroll down %counter%
+
+[module/filesystem]
+type = internal/fs
+
+; Mountpoints to display
+mount-0 = /
+mount-1 = /home
+
+; Seconds to sleep between updates
+; Default: 30
+interval = 60
+
+; Display fixed precision values
+; Default: false
+;fixed-values = true
+
+; Spacing between entries
+; Default: 2
+spacing = 1
+
+; Available tags:
+;   <label-mounted> (default)
+;   <bar-free>
+;   <bar-used>
+;   <ramp-capacity>
+format-mounted = <label-mounted>
+format-mounted-foreground = ${colors.darkpurple}
+
+; Available tags:
+;   <label-unmounted> (default)
+format-unmounted = <label-unmounted>
+format-unmounted-foreground = ${colors.red}
+
+; Available tokens:
+;   %mountpoint%
+;   %type%
+;   %fsname%
+;   %percentage_free%
+;   %percentage_used%
+;   %total%
+;   %free%
+;   %used%
+; Default: %mountpoint% %percentage_free%%
+label-mounted = %mountpoint%: %percentage_used%%
+
+; Available tokens:
+;   %mountpoint%
+; Default: %mountpoint% is not mounted
+label-unmounted = %mountpoint%: -
+;label-unmounted-foreground = #55
+
+[module/memory]
+type = internal/memory
+format-foreground = ${colors.darkblue}
+
+; Seconds to sleep between updates
+; Default: 1
+interval = 3
+
+; Available tags:
+;   <label> (default)
+;   <bar-used>
+;   <bar-free>
+;   <ramp-used>
+;   <ramp-free>
+;   <bar-swap-used>
+;   <bar-swap-free>
+;   <ramp-swap-used>
+;   <ramp-swap-free>
+format = <label>
+
+; Available tokens:
+;   %percentage_used% (default)
+;   %percentage_free%
+;   %gb_used%
+;   %gb_free%
+;   %gb_total%
+;   %mb_used%
+;   %mb_free%
+;   %mb_total%
+;   %percentage_swap_used%
+;   %percentage_swap_free%
+;   %mb_swap_total%
+;   %mb_swap_free%
+;   %mb_swap_used%
+;   %gb_swap_total%
+;   %gb_swap_free%
+;   %gb_swap_used%
+
+label = mem: %gb_used%/%gb_total%
+
+; Only applies if <bar-used> is used
+bar-used-indicator =
+bar-used-width = 50
+bar-used-foreground-0 = #55aa55
+bar-used-foreground-1 = #557755
+bar-used-foreground-2 = #f5a70a
+bar-used-foreground-3 = #ff5555
+bar-used-fill = ▐
+bar-used-empty = ▐
+bar-used-empty-foreground = #444444
+
+; Only applies if <ramp-used> is used
+ramp-used-0 = ▁
+ramp-used-1 = ▂
+ramp-used-2 = ▃
+ramp-used-3 = ▄
+ramp-used-4 = ▅
+ramp-used-5 = ▆
+ramp-used-6 = ▇
+ramp-used-7 = █
+
+; Only applies if <ramp-free> is used
+ramp-free-0 = ▁
+ramp-free-1 = ▂
+ramp-free-2 = ▃
+ramp-free-3 = ▄
+ramp-free-4 = ▅
+ramp-free-5 = ▆
+ramp-free-6 = ▇
+ramp-free-7 = █
+
+[module/cpu]
+type = internal/cpu
+
+; Seconds to sleep between updates
+; Default: 1
+interval = 2
+format-foreground = ${colors.darkyellow}
+
+; Available tags:
+;   <label> (default)
+;   <bar-load>
+;   <ramp-load>
+;   <ramp-coreload>
+format = <label> <ramp-coreload>
+
+; Available tokens:
+;   %percentage% (default) - total cpu load averaged over all cores
+;   %percentage-sum% - Cumulative load on all cores
+;   %percentage-cores% - load percentage for each core
+;   %percentage-core[1-9]% - load percentage for specific core
+label = cpu: %percentage%%
+label-minlen = 8
+label-align = center
+
+; Spacing between individual per-core ramps
+ramp-coreload-spacing = 1
+ramp-coreload-0 = ▁
+ramp-coreload-1 = ▂
+ramp-coreload-2 = ▃
+ramp-coreload-3 = ▄
+ramp-coreload-4 = ▅
+ramp-coreload-5 = ▆
+ramp-coreload-6 = ▇
+ramp-coreload-7 = █
+
+[module/temperature]
+type = internal/temperature
+format-foreground = ${colors.darkyellow}
+
+; Seconds to sleep between updates
+; Default: 1
+interval = 4
+
+; Thermal zone to use
+; To list all the zone types, run 
+; $ for i in /sys/class/thermal/thermal_zone*; do echo "$i: $(<$i/type)"; done
+; Default: 0 -> 0 PCH; 1 CPU PKG
+thermal-zone = 1
+
+; Full path of temperature sysfs path
+; Use `sensors` to find preferred temperature source, then run
+; $ for i in /sys/class/hwmon/hwmon*/temp*_input; do echo "$(<$(dirname $i)/name): $(cat ${i%_*}_label 2>/dev/null || echo $(basename ${i%_*})) $(readlink -f $i)"; done
+; to find path to desired file
+; Default reverts to thermal zone setting
+;hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input
+
+; Base temperature for where to start the ramp (in degrees celsius)
+; Default: 0
+base-temperature = 20
+
+; Threshold temperature to display warning label (in degrees celsius)
+; Default: 80
+warn-temperature = 60
+
+; Whether or not to show units next to the temperature tokens (°C, °F)
+; Default: true
+units = true
+
+; Available tags:
+;   <label> (default)
+;   <ramp>
+format = <label>
+
+; Available tags:
+;   <label-warn> (default)
+;   <ramp>
+format-warn = <label-warn>
+format-warn-foreground = ${colors.red}
+; Available tokens:
+;   %temperature% (deprecated)
+;   %temperature-c%   (default, temperature in °C)
+;   %temperature-f%   (temperature in °F)
+label = [%temperature-c%]
+label-padding-left = 2
+
+; Available tokens:
+;   %temperature% (deprecated)
+;   %temperature-c%   (default, temperature in °C)
+;   %temperature-f%   (temperature in °F)
+label-warn = [(!)%temperature-c%]
+
+; Requires the <ramp> tag
+; The icon selection will range from `base-temperature` to `warn-temperature`,
+; temperatures above `warn-temperature` will use the last icon
+; and temperatures below `base-temperature` will use `ramp-0`
+ramp-0 = A
+ramp-1 = B
+ramp-2 = C
+ramp-foreground = #55
+
+[module/spotify]
+type = custom/script
+interval = 1
+;format-prefix = " "
+format = <label>
+exec = python ~/.config/polybar/polybar-spotify/spotify_status.py -f '{artist} - {song}'
+click-left = playerctl play-pause
+click-right = playerctl previous
+double-click-left = playerctl next
+format-underline = ${colors.green}
