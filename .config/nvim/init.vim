@@ -5,10 +5,12 @@ Plug 'junegunn/fzf.vim'
 Plug 'liuchengxu/vim-which-key'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mhinz/vim-startify'
+Plug 'lambdalisue/suda.vim'
 call plug#end()
 
 inoremap fd <Esc>
 
+set statusline^=%{coc#status()}
 " COLOR SCHEME
 
 colorscheme gruvbox
@@ -68,7 +70,7 @@ let g:which_key_map.f = {
 	"\ C d 	'convert file from unix to dos encoding' ,
 	"\ C u 	'convert file from dos to unix encoding' ,
 	\ 'D' : ['DeleteFileAndCloseBuffer()'	,	'delete-current-buffer-file'],
-	\ 'E' :	['w !sudo tee %'		,	'sudo-edit'],
+	\ 'E' :	['suda#write(@%)'		,	'sudo-edit'],
 	\ 'f' :	['Files'			,	'open-file'],
 	"\ F 	'try to open the file under point =helm=' ,
 	"\ j 	'jump to the current buffer file in dired' ,
