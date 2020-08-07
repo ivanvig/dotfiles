@@ -1,8 +1,8 @@
 
 ### Added by Zplugin's installer
-source "$HOME/.zplugin/bin/zplugin.zsh"
-autoload -Uz _zplugin
-(( ${+_comps} )) && _comps[zplugin]=_zplugin
+source "$HOME/.zinit/bin/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
 ### End of Zplugin installer's chunk
 
 #set history size
@@ -21,25 +21,28 @@ setopt EXTENDED_HISTORY
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*' menu yes select
 alias dotconf='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+export EDITOR=nvim
+export VISUAL=nvim
 
-zplugin ice blockf
-zplugin light zsh-users/zsh-completions
+zinit ice blockf
+zinit light zsh-users/zsh-completions
 
 # Plugin history-search-multi-word loaded with tracking.
-zplugin load zdharma/history-search-multi-word
+zinit load zdharma/history-search-multi-word
 
 # Load the pure theme, with zsh-async library that's bundled with it.
-zplugin ice pick"async.zsh" src"pure.zsh"
-zplugin light sindresorhus/pure
+zinit ice pick"async.zsh" src"pure.zsh"
+zinit light sindresorhus/pure
 
-zplugin light softmoth/zsh-vim-mode
+zinit light softmoth/zsh-vim-mode
 # Two regular plugins loaded without tracking.
-zplugin light zsh-users/zsh-autosuggestions
-zplugin ice atinit'zpcompinit; zpcdreplay' wait'!1'
-zplugin light zdharma/fast-syntax-highlighting
+zinit light zsh-users/zsh-autosuggestions
+zinit ice atinit'zpcompinit; zpcdreplay' wait'!1'
+zinit light zdharma/fast-syntax-highlighting
 
 #
 #autoload -Uz compinit
 #compinit
 #
-#zplugin cdreplay -q
+#zinit cdreplay -q
+### End of Zinit's installer chunk
