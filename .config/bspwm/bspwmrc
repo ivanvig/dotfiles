@@ -1,9 +1,14 @@
 #! /bin/sh
 
 host=$(hostname -s)
-if ! pgrep compton > /dev/null; then
-    compton --config ~/.config/compton.conf &
+if ! pgrep picom > /dev/null; then
+    picom --config ~/.config/picom.conf &
 fi
+
+if ! pgrep redshift-gtk > /dev/null; then
+    redshift-gtk &
+fi
+
 if ! pgrep sxhkd > /dev/null; then
     sxhkd -m -1 &
 fi
