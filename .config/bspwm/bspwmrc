@@ -19,18 +19,21 @@ if [ $host = "galatea" ]; then
 
 elif [ $host = "proteus" ]; then
     bar="notebook-bar"
+    feh --bg-fill Images/thewitness.png
+
     if ! pgrep blueman-applet > /dev/null; then
         blueman-applet &
     fi
+
     if ! pgrep optimus-manager-qt > /dev/null; then
         optimus-manager-qt &
     fi
-    feh --bg-fill Images/thewitness.png
+
     if ! pgrep picom > /dev/null; then
 	picom -b --config ~/.config/picom-notebook.conf
     fi
 
-    if ! pgrep clight > /dev/null; then
+    if ! pgrep 'clight$' > /dev/null; then
 	clight &
     fi
 
