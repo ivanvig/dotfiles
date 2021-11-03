@@ -1,9 +1,10 @@
 call plug#begin('~/.local/share/nvim/plugged')
 Plug 'morhetz/gruvbox'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'liuchengxu/vim-which-key'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'dense-analysis/ale'
+"Plug 'maximbaz/lightline-ale'
+"Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+"Plug 'junegunn/fzf.vim'
+Plug 'folke/which-key.nvim'
 Plug 'mhinz/vim-startify'
 Plug 'lambdalisue/suda.vim'
 Plug 'preservim/nerdcommenter'
@@ -12,126 +13,184 @@ Plug 'itchyny/lightline.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
+Plug 'vimwiki/vimwiki'
+
+
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
+
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+"Plug 'prabirshrestha/vim-lsp'
+"Plug 'mattn/vim-lsp-settings'
+"Plug 'prabirshrestha/asyncomplete.vim'
+"Plug 'prabirshrestha/asyncomplete-lsp.vim'
+"Plug 'prabirshrestha/asyncomplete-file.vim'
+"Plug 'prabirshrestha/asyncomplete-buffer.vim'
 call plug#end()
 
+" MISC
 inoremap fd <Esc>
+set relativenumber
 set number
+set tabstop=4
+set shiftwidth=4
+set expandtab
 
-set statusline^=%{coc#status()}
+set nocompatible
+filetype plugin on
+syntax on
+
 " COLOR SCHEME
-
 colorscheme gruvbox
 set background=dark " use dark mode
 
 " LEADER KEY / WHICHKEY
-
 let g:mapleader = "\<Space>"
 let g:maplocalleader = ','
 
-call which_key#register('<Space>', "g:which_key_map")
-call which_key#register(',', "g:which_key_localmap")
+lua << EOF
+  require("which-key").setup {
+    -- your configuration comes here
+    -- or leave it empty to use the default settings
+    -- refer to the configuration section below
+  }
+  local wk = require("which-key")
+  wk.register({
+      ["<leader>"] = {
+        b = {
+          name = "+buffer" ,
+          d = {"<cmdd>bd<cr>"        , "Delete buffer"}   ,
+          f = {"<cmd>bfirst<cr>"    , "First buffer"}    ,
+          h = {"<cmd>Startify<cr>"  , "Home buffer"}     ,
+          l = {"<cmd>blast<cr>"     , "Last buffer"}     ,
+          n = {"<cmd>bnext<cr>"     , "Next buffer"}     ,
+          p = {"<cmd>bprevious<cr>" , "Previous buffer"} ,
+          b = {"<cmd>Telescope buffers<cr>"   , "Search buffer"},
+        },
+        f = {
+          name = "+file",
+          f = { "<cmd>Telescope find_files<cr>",     "Find File" },
+          r = { "<cmd>Telescope oldfiles<cr>",       "Open Recent File" },
+          n = { "<cmd>enew<cr>",                     "New File" },
+          c = {'<cmd>e ~/.config/nvim/init.vim<cr>', 'Open config file'},
+          E = {'<cmd>suda#write(@%)<cr>',                     'Sudo edit'},
+          b = {'<cmd>Telescope file_browser<cr>',    'File browser'},
+          f = {'<cmd>Telescope find_files<cr>',      'Open file'},
+          s = {'<cmd>update<cr>',                             'Save file'},
+          S = {'<cmd>wall<cr>',                               'Save all files'},
+          -- C d 	'convert file from unix to dos encoding' ,
+          -- C u 	'convert file from dos to unix encoding' ,
+          -- l 	'open file literally in =fundamental mode=' ,
+          -- L 	'Locate a file (using =locate=)' ,
+          -- o 	'open a file using the default external program' ,
+          -- R 	'rename the current file' ,
+          -- t 	'toggle file tree side bar using [[https://github.com/jaypei/emacs-neotree][NeoTree]]' ,
+          -- y 	'show current file absolute path in the minibuffer' ,
+        },
+        w = {
+          name = '+windows' ,
+          w     = {'<C-W>w',    'Other window'},
+          d     = {'<C-W>c',    'Delete window'},
+          ["-"] = {'<C-W>s',    'Split window below'},
+          ["|"] = {'<C-W>v',    'Split window right'},
+          ["2"] = {'<C-W>v',    'Layout double columns'},
+          h     = {'<C-W>h',    'Window left'},
+          j     = {'<C-W>j',    'Window below'},
+          l     = {'<C-W>l',    'Window right'},
+          k     = {'<C-W>k',    'Window up'},
+          H     = {'<C-W>5<',   'Expand window left'},
+          J     = {'resize +5', 'Expand window below'},
+          L     = {'<C-W>5>',   'Expand window right'},
+          K     = {'resize  5', 'Expand window up'},
+          ["="] = {'<C-W>=',    'Balance window'},
+          s     = {'<C-W>s',    'Split window below'},
+          v     = {'<C-W>v',    'Split window below'},
+        },
+        x = {
+          name	= '+text',
+          a		= {'<Plug>(EasyAlign)', 'Align'},
+        },
+        s = {
+          name = '+search' ,
+          s  = {'<cmd>Telescope live_grep<cr>',	'Search string on current dir'},
+          }
+        },
+        c = {
+          name  = '+code'			,
+          c     = {'<plug>NERDCommenterSexy', 'Comment lines'},
+          y     = {'<plug>NERDCommenterYank', 'Yank and comment'},
+          i     = {'<plug>NERDCommenterInvert', 'Toggle comment individually'},
+          u     = {'<plug>NERDCommenterUncomment', 'uncomment-lines'},
+          A     = {'<plug>NERDCommenterAppend', 'Comment append'},
+          a     = {'<cmd>Telescope lps_code_actions<cr>', 'code-actions'},
+--          r     = 'coc-rename-symbol'		,
+--          f     = 'coc-format-selected'		,
+        },
+  })
 
-nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
-vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
-nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
-
-let g:which_key_map = {}
-let g:which_key_localmap = {}
-
-let g:which_key_map.b = {
-      \ 'name' : '+buffer' ,
-      \ '1' : ['b1'        , 'buffer 1']        ,
-      \ '2' : ['b2'        , 'buffer 2']        ,
-      \ 'd' : ['bd'        , 'delete-buffer']   ,
-      \ 'f' : ['bfirst'    , 'first-buffer']    ,
-      \ 'h' : ['Startify'  , 'home-buffer']     ,
-      \ 'l' : ['blast'     , 'last-buffer']     ,
-      \ 'n' : ['bnext'     , 'next-buffer']     ,
-      \ 'p' : ['bprevious' , 'previous-buffer'] ,
-      \ 'b' : ['Buffers'   , 'fzf-buffer']      ,
-      \ }
-
-let g:which_key_map['w'] = {
-      \ 'name' : '+windows' ,
-      \ 'w' : ['<C-W>w'     , 'other-window']          ,
-      \ 'd' : ['<C-W>c'     , 'delete-window']         ,
-      \ '-' : ['<C-W>s'     , 'split-window-below']    ,
-      \ '|' : ['<C-W>v'     , 'split-window-right']    ,
-      \ '2' : ['<C-W>v'     , 'layout-double-columns'] ,
-      \ 'h' : ['<C-W>h'     , 'window-left']           ,
-      \ 'j' : ['<C-W>j'     , 'window-below']          ,
-      \ 'l' : ['<C-W>l'     , 'window-right']          ,
-      \ 'k' : ['<C-W>k'     , 'window-up']             ,
-      \ 'H' : ['<C-W>5<'    , 'expand-window-left']    ,
-      \ 'J' : ['resize +5'  , 'expand-window-below']   ,
-      \ 'L' : ['<C-W>5>'    , 'expand-window-right']   ,
-      \ 'K' : ['resize -5'  , 'expand-window-up']      ,
-      \ '=' : ['<C-W>='     , 'balance-window']        ,
-      \ 's' : ['<C-W>s'     , 'split-window-below']    ,
-      \ 'v' : ['<C-W>v'     , 'split-window-below']    ,
-      \ '?' : ['Windows'    , 'fzf-window']            ,
-      \ }
-
-let g:which_key_map.f = {
-      \ 'name' : '+files' ,
-	"\ c 	'copy current file to a different location' ,
-	"\ C d 	'convert file from unix to dos encoding' ,
-	"\ C u 	'convert file from dos to unix encoding' ,
-	\ 'D' : ['DeleteFileAndCloseBuffer()'	,	'delete-current-buffer-file'],
-	\ 'E' :	['suda#write(@%)'		,	'sudo-edit'],
-	\ 'f' :	['Files'			,	'open-file'],
-	"\ F 	'try to open the file under point =helm=' ,
-	"\ j 	'jump to the current buffer file in dired' ,
-	"\ l 	'open file literally in =fundamental mode=' ,
-	"\ L 	'Locate a file (using =locate=)' ,
-	"\ o 	'open a file using the default external program' ,
-	"\ R 	'rename the current file' ,
-	\ 's' :	['update' 	, 	'save-file'] ,
-	\ 'S' :	['wall' 	, 	'save-all-files'] ,
-	"\ r 	'open a recent file with =helm=' ,
-	"\ t 	'toggle file tree side bar using [[https://github.com/jaypei/emacs-neotree][NeoTree]]' ,
-	"\ v d 	'add a directory variable' ,
-	"\ v f 	'add a local variable to the current file' ,
-	"\ v p 	'add a local variable to the first line of the current file' ,
-	"\ y 	'show current file absolute path in the minibuffer' ,
-	\ }
-
-fun! DeleteFileAndCloseBuffer()
-  let choice = confirm("Delete file and close buffer?", "&Yes\n&No", 1)
-  if choice == 1 | call delete(expand('%:p')) | q! | endif
-endfun
-
-let g:which_key_map.c = {
-			\ 'name'	: '+code'			,
-			\ 'c'		: 'comment-lines'		,
-			\ 'n'		: 'comment-force-nesting'	,
-			\ ' '		: 'toggle-comment'		,
-			\ 'm'		: 'comment-minimal'		,
-			\ 'i' 		: 'toggle-comment-individually'	,
-			\ 's' 		: 'comment-sexy'		,
-			\ 'y' 		: 'yank-and-comment'		,
-			\ '$' 		: 'comment-from-cursor'		,
-			\ 'A' 		: 'comment-append'		,
-			\ 'a' 		: 'comment-alternate-delimiters',
-			\ 'l' 		: 'comment-align-left'		,
-			\ 'b' 		: 'comment-align-both'		,
-			\ 'u' 		: 'uncomment-lines'		,
-			\ 'r' 		: 'coc-rename-symbol'		,
-			\ 'f' 		: 'coc-format-selected'		,
-			\}
-
-let g:which_key_map.x = {
-			\ 'name'	: '+text',
-			\ 'a'		: ['<Plug>(EasyAlign)', 'align'],
-			\}
-
-let g:which_key_map.t = {
-			\ 'name'	: '+toggle',
-			\ 'n'		: [':set nu!', 'line-number'],
-			\ 'r'		: [':set rnu!', 'relative-line-number'],
-			\}
+  wk.register({
+      ["<leader>"] = {
+        x = {
+          name	= '+text',
+          a		= {'<Plug>(EasyAlign)', 'Align'},
+          }
+        },
+    }, {mode="v"})
+EOF
 
 
+"let g:which_key_map.c = {
+			"\ 'name'	: '+code'			,
+			"\ 'c'		: 'comment-lines'		,
+			"\ 'n'		: 'comment-force-nesting'	,
+			"\ ' '		: 'toggle-comment'		,
+			"\ 'm'		: 'comment-minimal'		,
+			"\ 'i' 		: 'toggle-comment-individually'	,
+			"\ 's' 		: 'comment-sexy'		,
+			"\ 'y' 		: 'yank-and-comment'		,
+			"\ '$' 		: 'comment-from-cursor'		,
+			"\ 'A' 		: 'comment-append'		,
+			"\ 'a' 		: [':Telescope lps_code_actions', 'code-actions'],
+			"\ 'l' 		: 'comment-align-left'		,
+			"\ 'b' 		: 'comment-align-both'		,
+			"\ 'u' 		: 'uncomment-lines'		,
+			"\ 'r' 		: 'coc-rename-symbol'		,
+			"\ 'f' 		: 'coc-format-selected'		,
+			"\}
+
+"let g:which_key_map.x = {
+			"\ 'name'	: '+text',
+			"\ 'a'		: ['<Plug>(EasyAlign)', 'align'],
+			"\}
+
+"let g:which_key_map.t = {
+			"\ 'name'	: '+toggle',
+			"\ 'n'		: [':set nu!', 'line-number'],
+			"\ 'r'		: [':set rnu!', 'relative-line-number'],
+			"\}
+
+"let g:which_key_map.g = {
+			"\ 'name'	: '+git',
+			"\ 's'		: [':Telescope git_status', 'git-status'],
+			"\ 'S'		: [':Telescope git_stash', 'git-stash'],
+			"\ 'c'		: [':Telescope git_commits', 'git-commits'],
+			"\ 'f'		: [':Telescope git_files', 'search-file'],
+			"\ 'b'		: [':Telescope git_branches', 'git-branch'],
+			"\ 'B'		: [':Telescope git_bcommits', 'buffer-commits'],
+			"\}
+
+" STARTIFY
 let g:startify_custom_header = 'startify#center([
 			\"                       s/    .-/-                 ",
 			\"                       -m/`` ..-:/..`yo           ",
@@ -162,181 +221,157 @@ let g:startify_custom_header = 'startify#center([
 			\"          Oh boy, here I go coding again          ",
 			\])'
 
-augroup pybindings
-  autocmd! pybindings
-  autocmd Filetype python nmap <buffer> <silent> <localleader>db Oimport pdb; pdb.set_trace()<Esc>
-  autocmd Filetype python let g:which_key_localmap.d = {'name' : '+debug'}
-  autocmd Filetype python let g:which_key_localmap.d.b = 'add-breakpoint'
-augroup end
+" PYTHON SPECIFIC KEYBINDINGS
+"augroup pybindings
+  "autocmd! pybindings
+  "autocmd Filetype python nmap <buffer> <silent> <localleader>db Oimport pdb; pdb.set_trace()<Esc>
+  "autocmd Filetype python let g:which_key_localmap.d = {'name' : '+debug'}
+  "autocmd Filetype python let g:which_key_localmap.d.b = 'add-breakpoint'
+"augroup end
 
-
+" LIGHTLINE
+set noshowmode
 let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'cocstatus', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'component_function': {
-      \   'cocstatus': 'coc#status'
-      \ },
+      \ 'colorscheme': 'jellybeans',
       \ }
 
-" Use auocmd to force lightline update.
-autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
-set noshowmode
+" VSNIP
+" Expand
+imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+smap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+
+" Expand or jump
+imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+
+" Jump forward or backward
+imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+
+""""""""""""  NerdCommenter
+let g:NERDCreateDefaultMappings = 0
+
+""""""""""""  NVIM LSP/CMP
+set completeopt=menu,menuone,noselect
+
+lua <<EOF
+
+  -- Neovim lsp
+  require'lspconfig'.svls.setup{}
+  require'lspconfig'.pyright.setup{}
+  require'lspconfig'.clangd.setup{}
+
+  local nvim_lsp = require('lspconfig')
+  
+  -- Use an on_attach function to only map the following keys
+  -- after the language server attaches to the current buffer
+  local on_attach = function(client, bufnr)
+    local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+    local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+  
+    -- Mappings.
+    local opts = { noremap=true, silent=true }
+  
+    -- See `:help vim.lsp.*` for documentation on any of the below functions
+    buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+    buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+    buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+    buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+    buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+    buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+    buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+    buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+    buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+    buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+    buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+    buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+    buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+    buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+    buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+    buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+    buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+  
+  end
+  
+  -- Use a loop to conveniently call 'setup' on multiple servers and
+  -- map buffer local keybindings when the language server attaches
+  local servers = { 'pyright', 'clangd', 'svls' }
+  for _, lsp in ipairs(servers) do
+    nvim_lsp[lsp].setup {
+      on_attach = on_attach,
+      flags = {
+        debounce_text_changes = 150,
+      }
+    }
+  end
 
 
+  -- Setup nvim-cmp.
+  local cmp = require'cmp'
 
-"""""""" CoC CONFIG 
-" TextEdit might fail if hidden is not set.
-set hidden
+  cmp.setup({
+    snippet = {
+      -- REQUIRED - you must specify a snippet engine
+      expand = function(args)
+        vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+        -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+        -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+        -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
+      end,
+    },
+    mapping = {
+      ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+      ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+      ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+      ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+      ['<C-e>'] = cmp.mapping({
+        i = cmp.mapping.abort(),
+        c = cmp.mapping.close(),
+      }),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }),
+      ['<Tab>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 's' }),
+    },
+    sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+      { name = 'vsnip' }, -- For vsnip users.
+      -- { name = 'luasnip' }, -- For luasnip users.
+      -- { name = 'ultisnips' }, -- For ultisnips users.
+      -- { name = 'snippy' }, -- For snippy users.
+    }, {
+      { name = 'buffer' },
+    })
+  })
 
-" Some servers have issues with backup files, see #649.
-set nobackup
-set nowritebackup
+  -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+  cmp.setup.cmdline('/', {
+    sources = {
+      { name = 'buffer' }
+    }
+  })
 
-" Give more space for displaying messages.
-set cmdheight=2
+  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+  cmp.setup.cmdline(':', {
+    sources = cmp.config.sources({
+      { name = 'path' }
+    }, {
+      { name = 'cmdline' }
+    })
+  })
 
-" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
-" delays and poor user experience.
-set updatetime=300
+  -- Setup lspconfig.
+  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+  require('lspconfig')['svls'].setup {
+    capabilities = capabilities
+  }
+  require('lspconfig')['pyright'].setup {
+    capabilities = capabilities
+  }
+  require('lspconfig')['clangd'].setup {
+    capabilities = capabilities
+  }
+EOF
 
-" Don't pass messages to |ins-completion-menu|.
-set shortmess+=c
 
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
-
-" Use tab for trigger completion with characters ahead and navigate.
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
-" position. Coc only does snippet and additional edit on confirm.
-" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
-if exists('*complete_info')
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-else
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-endif
-
-" Use `[g` and `]g` to navigate diagnostics
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" Symbol renaming.
-"nmap <leader>rn <Plug>(coc-rename)
-nmap <leader>cr <Plug>(coc-rename)
-
-" Formatting selected code.
-xmap <leader>cf  <Plug>(coc-format-selected)
-nmap <leader>cf  <Plug>(coc-format-selected)
-
-augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-
-" TODO: What is this?????
-"" Applying codeAction to the selected region.
-"" Example: `<leader>aap` for current paragraph
-"xmap <leader>a  <Plug>(coc-codeaction-selected)
-"nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-"" Remap keys for applying codeAction to the current buffer.
-"nmap <leader>ac  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
-"nmap <leader>qf  <Plug>(coc-fix-current)
-
-" Map function and class text objects
-" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-xmap if <Plug>(coc-funcobj-i)
-omap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap af <Plug>(coc-funcobj-a)
-xmap ic <Plug>(coc-classobj-i)
-omap ic <Plug>(coc-classobj-i)
-xmap ac <Plug>(coc-classobj-a)
-omap ac <Plug>(coc-classobj-a)
-
-" Use CTRL-S for selections ranges.
-" Requires 'textDocument/selectionRange' support of LS, ex: coc-tsserver
-nmap <silent> <C-s> <Plug>(coc-range-select)
-xmap <silent> <C-s> <Plug>(coc-range-select)
-
-" Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocAction('format')
-
-" Add `:Fold` command to fold current buffer.
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
-" Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
-" Add (Neo)Vim's native statusline support.
-" NOTE: Please see `:h coc-status` for integrations with external plugins that
-" provide custom statusline: lightline.vim, vim-airline.
-" set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
-" TODO: whats this?
-" Mappings using CoCList:
-" Show all diagnostics.
-"nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-"" Manage extensions.
-"nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
-"" Show commands.
-"nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
-"
-"" Find symbol of current document.
-"nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-"" Search workspace symbols.
-"nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
-"" Do default action for next item.
-"nnoremap <silent> <space>j  :<C-u>CocNext<CR>
-"" Do default action for previous item.
-"nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
-"" Resume latest coc list.
-"nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
