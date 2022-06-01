@@ -46,6 +46,7 @@ set number
 set tabstop=4
 set shiftwidth=4
 set expandtab
+set colorcolumn=80
 
 set nocompatible
 filetype plugin on
@@ -59,6 +60,8 @@ set background=dark " use dark mode
 let g:mapleader = "\<Space>"
 let g:maplocalleader = ','
 
+let g:vimwiki_map_prefix = '<Leader>k'
+
 lua << EOF
   require("which-key").setup {
     -- your configuration comes here
@@ -67,13 +70,13 @@ lua << EOF
   }
   local wk = require("which-key")
   wk.register({
-      ["<leader>"] = {
         b = {
           name = "+buffer" ,
           d = {"<cmdd>bd<cr>"        , "Delete buffer"}   ,
           f = {"<cmd>bfirst<cr>"    , "First buffer"}    ,
           h = {"<cmd>Startify<cr>"  , "Home buffer"}     ,
           l = {"<cmd>blast<cr>"     , "Last buffer"}     ,
+          d = {"<cmd>b#<bar>bd#<cr>", "Delete buffer"}     ,
           n = {"<cmd>bnext<cr>"     , "Next buffer"}     ,
           p = {"<cmd>bprevious<cr>" , "Previous buffer"} ,
           b = {"<cmd>Telescope buffers<cr>"   , "Search buffer"},
@@ -124,7 +127,6 @@ lua << EOF
         s = {
           name = '+search' ,
           s  = {'<cmd>Telescope live_grep<cr>',	'Search string on current dir'},
-          }
         },
         c = {
           name  = '+code'			,
@@ -137,7 +139,7 @@ lua << EOF
 --          r     = 'coc-rename-symbol'		,
 --          f     = 'coc-format-selected'		,
         },
-  })
+    }, {prefix = "<leader>"})
 
   wk.register({
       ["<leader>"] = {
@@ -259,12 +261,11 @@ set completeopt=menu,menuone,noselect
 lua <<EOF
 
   -- Neovim lsp
-  require'lspconfig'.svls.setup{}
+  require'lspconfig'.svlangserver.setup{}
   require'lspconfig'.pyright.setup{}
   require'lspconfig'.clangd.setup{}
 
   local nvim_lsp = require('lspconfig')
-  
   -- Use an on_attach function to only map the following keys
   -- after the language server attaches to the current buffer
   local on_attach = function(client, bufnr)
@@ -287,9 +288,9 @@ lua <<EOF
     buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
     buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
     buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-    buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-    buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-    buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+    buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+    buf_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+    buf_set_keymap('n', ']d', '<cmd>lua vimp.diagnostic.goto_next()<CR>', opts)
     buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
     buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
   
@@ -297,7 +298,7 @@ lua <<EOF
   
   -- Use a loop to conveniently call 'setup' on multiple servers and
   -- map buffer local keybindings when the language server attaches
-  local servers = { 'pyright', 'clangd', 'svls' }
+  local servers = { 'pyright', 'clangd', 'svlangserver' }
   for _, lsp in ipairs(servers) do
     nvim_lsp[lsp].setup {
       on_attach = on_attach,
@@ -306,6 +307,18 @@ lua <<EOF
       }
     }
   end
+
+  vim.o.updatetime = 250
+  vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})]]
+
+  vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+      virtual_text = false,
+      signs = true,
+      underline = true,
+      update_in_insert = false,
+  })
+  
+  
 
 
   -- Setup nvim-cmp.
@@ -363,7 +376,7 @@ lua <<EOF
   -- Setup lspconfig.
   local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
   -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  require('lspconfig')['svls'].setup {
+  require('lspconfig')['svlangserver'].setup {
     capabilities = capabilities
   }
   require('lspconfig')['pyright'].setup {
