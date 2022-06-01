@@ -105,10 +105,10 @@ super + ctrl + {m,x,y,z}
 super + shift + Tab
 	bspc monitor -f next
 
-super + {_,shift +} apostrophe;{1,2};{1-9,0}
-	bspc {desktop -f, node -d} ^{1,2}:^{1-9,10}
 # focus/move window to specific desktop on specific monitor
-#super + minus; {_,shift +}{1-2} ; {1-9,0}
+super + {_,shift +} minus;{1,2};{1-9,0}
+	bspc {desktop -f, node -d} ^{1,2}:^{1-9,10}
+# super + minus; {_,shift +}{1-2} ; {1-9,0}
 #	bspc {desktop -f, node -d} ^{1-2}:^{1-9,10}
 
 # focus the node in the given direction
