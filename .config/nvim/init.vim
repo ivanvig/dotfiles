@@ -266,6 +266,19 @@ lua <<EOF
   require'lspconfig'.clangd.setup{}
 
   local nvim_lsp = require('lspconfig')
+  nvim_lsp.svlangserver.setup {
+    on_init = function(client)
+    client.config.settings.systemverilog = {
+      includeIndexing     = {"**/*.{sv,svh}"},
+      excludeIndexing     = {},
+      defines             = {},
+      launchConfiguration = "verilator -sv -Wall --lint-only",
+      formatCommand       = "verible-verilog-format"
+    }
+    client.notify("workspace/didChangeConfiguration")
+    return true
+  end
+  }
   -- Use an on_attach function to only map the following keys
   -- after the language server attaches to the current buffer
   local on_attach = function(client, bufnr)
